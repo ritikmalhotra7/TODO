@@ -3,8 +3,17 @@ import Header from "./components/header";
 import React, { useState } from "react";
 import TodoItem from "./components/todoItem";
 import AddTodo from "./components/addTodo";
+import * as Font from "expo-font";
+
+const getFonts = () =>
+  FontFace.loadAsync({
+    "jetBrains-regular": require("./assets/fonts/JetBrainsMono-Regular.ttf"),
+  });
 
 export default function App() {
+  //custom fonts- you have to load them first
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
   const [todos, setTodos] = useState([]);
   /* remove the item with a key from the list and set the list through hooks */
   /* this is a function wiht params = key */
@@ -22,7 +31,8 @@ export default function App() {
       return [{ text: text, key: Math.random().toString() }, ...prevTodos];
     });
   };
-  return (
+
+  return fontsLoaded ? (
     <View style={styles.container}>
       <Header />
       <View style={styles.content}>
@@ -40,6 +50,8 @@ export default function App() {
         </View>
       </View>
     </View>
+  ) : (
+    <AppLoading startAsync={getFonts} onFinish={() => setFontsLoaded(true)} />
   );
 }
 
