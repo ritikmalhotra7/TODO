@@ -1,18 +1,25 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import Header from "./components/header";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoItem from "./components/todoItem";
 import AddTodo from "./components/addTodo";
 import * as Font from "expo-font";
+import {AppLoading} from 'expo';
 
-const getFonts = () =>
-  FontFace.loadAsync({
-    "jetBrains-regular": require("./assets/fonts/JetBrainsMono-Regular.ttf"),
-  });
+
 
 export default function App() {
   //custom fonts- you have to load them first
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const getFonts = () => {
+    Font.loadAsync({
+      "jetBrains-regular": require("./assets/fonts/JetBrainsMono-Regular.ttf"),
+    });
+    setFontsLoaded(true);
+  };
+  useEffect(() => {
+    getFonts();
+  }, []);
 
   const [todos, setTodos] = useState([]);
   /* remove the item with a key from the list and set the list through hooks */
@@ -51,7 +58,8 @@ export default function App() {
       </View>
     </View>
   ) : (
-    <AppLoading startAsync={getFonts} onFinish={() => setFontsLoaded(true)} />
+    <></>
+    // <AppLoading startAsync={getFonts} onFinish={() => setFontsLoaded(true)} />
   );
 }
 
